@@ -68,10 +68,10 @@ class GenericOpenIDConnectProvider(OAuth2Provider):
 
     def extract_uid(self, data):
         _uid_field = getattr(settings, "SOCIALACCOUNT_PROVIDERS", {}).get(PROVIDER_ID, {}).get("UID_FIELD", None)
-        if _uid_field:
+        if _uid_field and _uid_field in data:
             return data.get(_uid_field)
         else:
-            return data.get("uid", data.get("sub", data.get("id")))
+            return data.get("uid", data.get("sub", data.get("unique_name")))
 
     def extract_common_fields(self, data):
         _common_fields = getattr(settings, "SOCIALACCOUNT_PROVIDERS", {}).get(PROVIDER_ID, {}).get("COMMON_FIELDS", {})
